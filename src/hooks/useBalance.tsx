@@ -8,7 +8,7 @@ interface IBalanceData {
   chainId: number | undefined;
 }
 
-const getBalance = ({ account, library, chainId }: IBalanceData) => {
+const useBalance = ({ account, library, chainId }: IBalanceData) => {
   const [balance, setBalance] = useState<undefined | null | any>(null);
 
   useEffect((): any => {
@@ -38,4 +38,4 @@ const getBalance = ({ account, library, chainId }: IBalanceData) => {
   return balance === null ? "N/A" : balance ? formatEther(balance) : "";
 };
 
-export default getBalance;
+export default useBalance;

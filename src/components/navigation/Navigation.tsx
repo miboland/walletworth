@@ -4,7 +4,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { LinkOutlined, WalletOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu, PageHeader, Space } from "antd";
 import "./Navigation.css";
-import getBalance from "../../hooks/getBalance";
+import useBalance from "../../hooks/useBalance";
 
 import { chainName } from "../../utils/chains";
 
@@ -13,7 +13,7 @@ const Navigation = () => {
     Web3Provider
   >();
 
-  const balance = getBalance({ account, library, chainId });
+  const balance = useBalance({ account, library, chainId });
 
   const menu = (
     <Menu>
@@ -30,10 +30,10 @@ const Navigation = () => {
           <LinkOutlined />
           {chainName(chainId)}
         </Button>
-        <Button key="balance">
+        {/* <Button key="balance">
           <span id="eth">Ξ</span>
           <span>{balance}</span>
-        </Button>
+        </Button> */}
         <Dropdown.Button key="address" overlay={menu} type="ghost">
           <WalletOutlined />
           {`${account.slice(0, 6)}...${account.slice(

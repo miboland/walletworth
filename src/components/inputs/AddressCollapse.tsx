@@ -10,16 +10,15 @@ import {
   Row,
   Col,
   Statistic,
-  Divider,
   Collapse,
   Space,
   Table,
 } from "antd";
 import "./AddressCollapse.css";
-import getBalance from "../../hooks/getBalance";
+import useBalance from "../../hooks/useBalance";
 
 export const injectedConnector = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
+  supportedChainIds: [1],
 });
 
 const { Panel } = Collapse;
@@ -27,53 +26,30 @@ const { Panel } = Collapse;
 const AddressCollapse = () => {
   const [currentBalance, setCurrentBalance] = useState<any>();
   const [activeKey, setActiveKey] = useState<any>(["2"]);
-  const [savedResults, setSavedResults] = useState<any>([]);
   const [address, setAddress] = useState("");
   const [query, setQuery] = useState("");
   const { activate, account, active, chainId, library } = useWeb3React<
     Web3Provider
   >();
 
-  const balance = getBalance({ account, library, chainId });
+  const balance = useBalance({ account: address, library, chainId });
+
+  useEffect(() => {
+    setCurrentBalance(balance);
+  }, [balance]);
 
   const onClick = () => activate(injectedConnector);
 
   const onFinish = async (values: any) => {
     setAddress(values.address);
+    setQuery("");
 
     if (values.save) {
       setActiveKey(["1", "2", "3"]);
-      setSavedResults([
-        ...savedResults,
-        {
-          address: values.address,
-          balance,
-          key: values.address,
-          timestamp: new Date().toLocaleString(),
-        },
-      ]);
     } else {
       setActiveKey(["1", "2", ...activeKey]);
     }
   };
-
-  const columns = [
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Balance",
-      dataIndex: "balance",
-      key: "balance",
-    },
-    {
-      title: "Timestamp",
-      dataIndex: "timestamp",
-      key: "timestamp",
-    },
-  ];
 
   return (
     <div>
@@ -91,14 +67,23 @@ const AddressCollapse = () => {
                 <Col>
                   <Statistic
                     title={
-                      address
-                        ? `${address.slice(0, 6)}...${address.slice(
-                            address.length - 4,
-                            address.length
-                          )}`
-                        : null
+                      <a
+                        href={`https://etherscan.io/address/${address}`}
+                        target={"_blank"}
+                      >
+                        {address
+                          ? `${address.slice(0, 6)}...${address.slice(
+                              address.length - 4,
+                              address.length
+                            )}`
+                          : null}
+                      </a>
                     }
-                    value={balance ? `Ξ ${balance}` : ""}
+                    value={
+                      currentBalance && currentBalance !== "N/A"
+                        ? `Ξ ${currentBalance}`
+                        : "Search for a wallet address"
+                    }
                     precision={7}
                   />
                 </Col>
@@ -107,22 +92,12 @@ const AddressCollapse = () => {
           </Panel>
           <Panel header="Search Form" key="2">
             <Form name="basic" layout="vertical" onFinish={onFinish}>
-              <Form.Item
-                label="Wallet Address"
-                name="address"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input a valid wallet address",
-                  },
-                ]}
-              >
-                <Input onChange={(e) => setQuery(e.currentTarget.value)} />
+              <Form.Item label="Wallet Address" name="address">
+                <Input
+                  onChange={(e) => setQuery(e.currentTarget.value)}
+                  allowClear={true}
+                />
               </Form.Item>
-              <Form.Item name="save" valuePropName="checked">
-                <Checkbox>Save Results</Checkbox>
-              </Form.Item>
-
               <Form.Item>
                 <Button
                   type="primary"
@@ -133,9 +108,6 @@ const AddressCollapse = () => {
                 </Button>
               </Form.Item>
             </Form>
-          </Panel>
-          <Panel header="Results Table" key="3">
-            <Table columns={columns} dataSource={savedResults}></Table>
           </Panel>
         </Collapse>
       ) : (
