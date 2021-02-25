@@ -1,7 +1,7 @@
 import React from "react";
-import "./InaccessibleView.css";
-import { ethers } from "ethers";
 import { Button, PageHeader } from "antd";
+
+import "./InaccessibleView.css";
 
 declare const window: any;
 
