@@ -35,20 +35,7 @@ const getBalance = ({ account, library, chainId }: IBalanceData) => {
     }
   }, [account, library, chainId]);
 
-  return (
-    <>
-      {balance === null ? (
-        "N/A"
-      ) : balance ? (
-        <>
-          <span id="eth">Ξ</span>
-          <span>{formatEther(balance)}</span>
-        </>
-      ) : (
-        ""
-      )}
-    </>
-  );
+  return balance === null ? "N/A" : balance ? formatEther(balance) : "";
 };
 
 export default getBalance;

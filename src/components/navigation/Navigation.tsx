@@ -30,7 +30,10 @@ const Navigation = () => {
           <LinkOutlined />
           {chainName(chainId)}
         </Button>
-        <Button key="balance">{balance}</Button>
+        <Button key="balance">
+          <span id="eth">Ξ</span>
+          <span>{balance}</span>
+        </Button>
         <Dropdown.Button key="address" overlay={menu} type="ghost">
           <WalletOutlined />
           {`${account.slice(0, 6)}...${account.slice(
@@ -44,8 +47,8 @@ const Navigation = () => {
   return (
     <PageHeader
       className="site-page-header"
-      title="Wallet Worth: "
-      subTitle="discover the value of any Ethereum wallet"
+      title="Wallet Worth:"
+      subTitle="discover the balance of any Ethereum wallet"
       extra={[accountInfo]}
     />
   );

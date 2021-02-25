@@ -10,8 +10,8 @@ const InaccessibleView = () => {
     <>
       <PageHeader
         className="site-page-header"
-        title="Wallet Worth: "
-        subTitle="discover the value of any Ethereum wallet"
+        title="Wallet Worth:"
+        subTitle="discover the balance of any Ethereum wallet"
       />
       <main>
         <div>

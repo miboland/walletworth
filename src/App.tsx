@@ -1,11 +1,9 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import "./App.css";
-
 import { Web3ReactProvider } from "@web3-react/core";
 import { ethers } from "ethers";
 
-import AddressInput from "./components/inputs/AddressInput";
+import "./App.css";
+import AddressCollapse from "./components/inputs/AddressCollapse";
 import Navigation from "./components/navigation/Navigation";
 import InaccessibleView from "./components/guards/InaccessibleView/InaccessibleView";
 
@@ -25,7 +23,7 @@ const App = () => {
       <Web3ReactProvider getLibrary={getLibrary}>
         <Navigation />
         <main>
-          <AddressInput />
+          <AddressCollapse />
         </main>
       </Web3ReactProvider>
     </>
